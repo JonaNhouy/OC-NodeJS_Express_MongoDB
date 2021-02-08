@@ -1,6 +1,19 @@
+//1. start basic server
 const http = require('http');
+//2. execute Express app on Node server
 const app = require('./app');
 
+// const server = http.createServer((req, res) => {
+//     res.end('Voilà la réponse du serveur !');
+// });
+
+// app.set('port', process.env.PORT || 3000);
+// const server = http.createServer(app);
+
+// server.listen(process.env.PORT || 3000);
+
+//upgrade server
+//return valid port
 const normalizePort = val => {
   const port = parseInt(val, 10);
 
@@ -12,9 +25,10 @@ const normalizePort = val => {
   }
   return false;
 };
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
+//search errors & resolve
 const errorHandler = error => {
   if (error.syscall !== 'listen') {
     throw error;
@@ -36,7 +50,7 @@ const errorHandler = error => {
 };
 
 const server = http.createServer(app);
-
+//event listener
 server.on('error', errorHandler);
 server.on('listening', () => {
   const address = server.address();
