@@ -4,10 +4,11 @@ const router = express.Router();
 // const Thing = require('../models/Thing');
 
 const auth = require('../middleware/auth');
+const multer = require('../middleware/multer-config');
 const stuffCtrl = require('../controllers/stuff');
 
 //save Things in DB
-router.post('/', auth, stuffCtrl.createThing);
+router.post('/', auth, multer, stuffCtrl.createThing);
 
 //add route api/stuff
 // app.use('/api/stuff', (req, res, next) => {
@@ -33,7 +34,7 @@ router.post('/', auth, stuffCtrl.createThing);
 //   });
 
 router.get('/:id', auth, stuffCtrl.getOneThing); //take one specific thing
-router.put('/:id', auth, stuffCtrl.modifyThing); //update Thing
+router.put('/:id', auth, multer, stuffCtrl.modifyThing); //update Thing
 router.delete('/:id', auth, stuffCtrl.deleteThing); //delete Thing
 router.get('/', auth, stuffCtrl.getAllThings); //recup list Things in sell
 

@@ -1,11 +1,15 @@
 //move logique metier here
-const Thing = require('../models/Thing')
+const Thing = require('../models/Thing');
 
 //save Things in DB | move here
 exports.createThing = (req, res, next) => {
+  const thingObject = JSON.parse(req.body.thing);
+  delete thingObject._id;
     delete req.body._id;
     const thing = new Thing({
-      ...req.body
+      // ...req.body
+      ...thingObject,
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     });
     thing.save()
       .then(() => res.status(201).json({ message: 'Objet enregistré !'}))
@@ -13,9 +17,14 @@ exports.createThing = (req, res, next) => {
 };
 
 exports.modifyThing = (req, res, next) => {
-    Thing.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-      .then(() => res.status(200).json({ message: 'Objet modifié !'}))
-      .catch(error => res.status(400).json({ error }));
+  const thingObject = req.file ?
+  {
+    ...JSON.parse(req.body.thing),
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+  } : { ...req.body };
+  Thing.updateOne({ _id: req.params.id }, { ...thingObject, _id: req.params.id })
+    .then(() => res.status(200).json({ message: 'Objet modifié !'}))
+    .catch(error => res.status(400).json({ error }));
 };
 
 exports.deleteThing = (req, res, next) => {
