@@ -3,10 +3,11 @@ const express = require('express');
 const router = express.Router();
 // const Thing = require('../models/Thing');
 
+const auth = require('../middleware/auth');
 const stuffCtrl = require('../controllers/stuff');
 
 //save Things in DB
-router.post('/', stuffCtrl.createThing);
+router.post('/', auth, stuffCtrl.createThing);
 
 //add route api/stuff
 // app.use('/api/stuff', (req, res, next) => {
@@ -31,9 +32,9 @@ router.post('/', stuffCtrl.createThing);
 //     res.status(200).json(stuff); //ask completed
 //   });
 
-router.get('/:id', stuffCtrl.getOneThing); //take one specific thing
-router.put('/:id', stuffCtrl.modifyThing); //update Thing
-router.delete('/:id', stuffCtrl.deleteThing); //delete Thing
-router.get('/', stuffCtrl.getAllThings); //recup list Things in sell
+router.get('/:id', auth, stuffCtrl.getOneThing); //take one specific thing
+router.put('/:id', auth, stuffCtrl.modifyThing); //update Thing
+router.delete('/:id', auth, stuffCtrl.deleteThing); //delete Thing
+router.get('/', auth, stuffCtrl.getAllThings); //recup list Things in sell
 
 module.exports = router; //export router
